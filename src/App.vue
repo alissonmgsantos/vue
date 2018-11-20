@@ -4,7 +4,7 @@
        <p>{{ title }}</p>
      </div>
        <ul>
-       <li v-for="language of languages" :key="language">{{ language.name }}</li>
+       <li v-for="user in users"  :key="user.id">{{ user.name }}</li>
      </ul>
    </div>
  
@@ -15,21 +15,15 @@ export default {
   data() {
     return {
       title: "Learning Vue.js",
-      languages: [
-        {
-          name: "C"
-        },
-        {
-          name: "JAVA"
-        },
-        {
-          name: "PHP"
-        },
-        {
-          name: "C#"
-        }
-      ]
+      users: []
     };
+  },
+
+  created(){
+    let promise = this.$http.get('https://jsonplaceholder.typicode.com/users');
+        promise
+              .then(res => res.json())
+              .then(users => this.users = users, err => console.log(err));
   }
 };
 </script>
