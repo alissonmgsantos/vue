@@ -1,9 +1,7 @@
 <template>
    <div>
-     <div class="col-md-12">
-       <h3 align="center">{{ title }}</h3>
-       <p align="center">{{ description }}</p>
-     </div>
+ <my-header :title="title" :description="description"></my-header>
+     <div class="container-fluid">
 <table class="table">
   <thead>
     <tr>
@@ -29,10 +27,16 @@
   </tbody>
 </table>
 </div>
+</div>
 </template>
 
 <script>
+import HeaderVue from "./components/shared/Header.vue";
+
 export default {
+  components: {
+    "my-header": HeaderVue
+  },
   data() {
     return {
       title: "Learning Vue.js",
@@ -41,11 +45,11 @@ export default {
     };
   },
 
-  created(){
-    let promise = this.$http.get('https://jsonplaceholder.typicode.com/users');
-        promise
-              .then(res => res.json())
-              .then(users => this.users = users, err => console.log(err));
+  created() {
+    let promise = this.$http.get("https://jsonplaceholder.typicode.com/users");
+    promise
+      .then(res => res.json())
+      .then(users => (this.users = users), err => console.log(err));
   }
 };
 </script>
