@@ -2,6 +2,9 @@
    <div>
  <my-header :title="title" :description="description"></my-header>
      <div class="container-fluid">
+       <div class="mt-5" align="right">
+<input type="search" v-on:input="filter = $event.target.value" placeholder="Pesquisar" class="form-control">
+       </div>
 <table class="table">
   <thead>
     <tr>
@@ -15,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="user in users" :key="user.id">
+    <tr v-for="user in userFilter" :key="user.id">
       <th scope="row">{{ user.id }}</th>
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
@@ -41,9 +44,21 @@ export default {
     return {
       title: "Learning Vue.js",
       description: "https://jsonplaceholder.typicode.com/users",
-      users: []
+      users: [],
+      filter: ''
     };
   },
+
+ computed: {
+   userFilter(){
+     if(this.filter) {
+       let exp = new RegExp(this.filter.trim(), 'i');
+       return this.users.filter(user => exp.test(user.name));
+     }else{
+       return this.users;
+     }
+   }
+ },
 
   created() {
     let promise = this.$http.get("https://jsonplaceholder.typicode.com/users");
